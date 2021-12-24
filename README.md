@@ -1,4 +1,4 @@
-# movie_times
+# movie-times
 
 ## Project setup
 ```

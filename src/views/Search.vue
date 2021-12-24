@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content search">
     <div class="title">Search result for "{{ keyword }}"</div>
     <div v-if="keyword && statusAll && results.length == 3" class="results_box all_category_results">
       <div class="row_box">
@@ -226,7 +226,7 @@ export default {
   },
   // 從別的頁面轉換過來(網址重新整理)時第一次的created 或是直接更改網址也會(網址重新整理)
   async created(){
-    this.search(this.keyword, this.category, this.page);
+    await this.search(this.keyword, this.category, this.page);
   },
   components:{
     Slider,

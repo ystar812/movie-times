@@ -227,24 +227,20 @@ input[type=text]
 .title
   font-family: 'Oswald'
   font-size: 34px
-  padding: 0 10px 30px 10px
+  padding: 10px 10px 20px 10px
   @include laptop
-    font-size: 30px
+    font-size: 28px
     padding: 0 10px 20px 10px
   @include mobile
-    font-size: 28px
+    font-size: 26px
     padding: 0 10px 10px 10px
-    margin-bottom: 16px
 
 .subtitle
   font-family: 'Oswald'
   font-size: 27px
-  padding: 0 10px 20px 10px
+  padding: 10px
   @include laptop
     font-size: 23px
-    padding: 0 10px 10px 10px
-  @include mobile
-    padding: 0 10px 5px 10px
   .total_results
     font-family: Arial
     font-size: 18px
@@ -474,11 +470,14 @@ input[type=text]
 
 .row_box
   position: relative
-  margin-bottom: 80px
+  margin-bottom: 20px
   &.bottom
     margin: 20px 0
   &.tac
     text-align: center
+.search
+  .row_box
+    margin-bottom: 80px
 
 .btn
   display: inline-block

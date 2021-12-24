@@ -6,8 +6,8 @@
     <nav :class="{open:openMenu}">
       <ul>
         <li><router-link to="/movies" @click.native="mobileOpenMenu">MOVIES</router-link></li>
-        <li><router-link to="/" @click.native="mobileOpenMenu">CELEBS</router-link></li>
         <li><router-link to="/" @click.native="mobileOpenMenu">TV SHOW</router-link></li>
+        <li><router-link to="/" @click.native="mobileOpenMenu">CELEBS</router-link></li>
       </ul>
     </nav>
     <div class="search_box">
@@ -135,7 +135,7 @@ header
     @include mobile
       margin: 6px 43px 0 0
     input
-      width: 300px
+      width: 400px
       @include mobile
         width: calc(100vw - 203px)
       @include phone

@@ -90,7 +90,7 @@ export default {
     background-size: 60px
   @include mobile
     height: 66vw
-    margin-top: 0
+    margin: 0 0 20px 0
     background-size: 40px
   .banner
     position: relative

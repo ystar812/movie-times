@@ -82,6 +82,15 @@
     margin-bottom: 5px
     @include mobile
       margin-bottom: 4px
+  .first_row
+    display: -webkit-box
+    max-height: 2.6em
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
+    -webkit-line-clamp: 2
+    -webkit-box-orient: vertical
+    white-space: normal
   .second_row
     color: rgba(255,255,255,0.6)
     font-size: 16px
