@@ -1,0 +1,26 @@
+@mixin desktop
+  @media(min-width: 992px)
+    @content
+
+@mixin laptop
+  @media(max-width: 1400px)
+    @content
+
+@mixin mobile
+  @media(max-width: 991px)
+    @content
+
+@mixin phone
+  @media(max-width: 767px)
+    @content
+
+@mixin inline-animation($duration)
+  $name: inline-#{unique-id()}
+
+  @keyframes #{$name}
+    @content
+
+  animation-name: $name
+  animation-duration: $duration
+  animation-timing-function: ease-in-out
+  animation-iteration-count: infinite
