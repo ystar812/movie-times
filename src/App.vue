@@ -196,7 +196,7 @@ input[type=text]
   @include laptop
     padding: 2% 50px
   @include mobile
-    padding: 2% 30px
+    padding: 2% 30px 30px 30px
 
 .slider_box
   margin-bottom: 10px
@@ -234,6 +234,7 @@ input[type=text]
   @include mobile
     font-size: 28px
     padding: 0 10px 10px 10px
+    margin-bottom: 16px
 
 .subtitle
   font-family: 'Oswald'
@@ -472,7 +473,12 @@ input[type=text]
       flex-wrap: wrap
 
 .row_box
+  position: relative
   margin-bottom: 80px
+  &.bottom
+    margin: 20px 0
+  &.tac
+    text-align: center
 
 .btn
   display: inline-block
@@ -484,16 +490,27 @@ input[type=text]
   &:hover
     color: #000
     background-color: #eaeaea
+  @include mobile
+    font-size: 16px
+    padding: 6px 12px
   svg
     font-size: 15px
     margin: 0 -3px 0 5px
+  &.al
+    padding: 10px 24px
+    svg
+      margin: 0 5px 0 -3px
+
+.results_box
+  position: relative
+
 .slider_box
   .btn
     float: right
 
 .pagination
   text-align: center
-  margin-bottom: 30px
+  margin-bottom: 40px
   div
     display: inline-block
     vertical-align: top

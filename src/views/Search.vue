@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="title">Search result for "{{ keyword }}"</div>
-    <div v-if="keyword && statusAll && results.length == 3">
+    <div v-if="keyword && statusAll && results.length == 3" class="results_box all_category_results">
       <div class="row_box">
         <div class="subtitle">Movies <span class="total_results">({{results[0].data.total_results}})</span></div>
         <div class="slider_box" v-if="results[0].data.results.length > 0">
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div v-if="keyword && statusMore">
+    <div v-if="keyword && statusMore" class="results_box single_category_results">
       <div class="subtitle">{{categoryLabel}} <span class="total_results">({{sResults.total_results}})</span></div>
       <div class="list_box" :class="{show:showList}">
         <Item v-for="(item, key) in sResults.results" :key="key" :sItem="item" />
@@ -33,6 +33,9 @@
         <div @click="moreResults(keyword,category,page-1)"><font-awesome-icon icon="chevron-left" /></div>
         <div v-for="(item, key) in pagination" :key="key" :class="{current: item == page }" @click="moreResults(keyword,category,item)">{{ item }}</div>
         <div @click="moreResults(keyword,category,page+1)"><font-awesome-icon icon="chevron-right" /></div>
+      </div>
+      <div class="row_box bottom tac">
+        <div class="btn al" @click="searchAll(keyword)"><font-awesome-icon icon="chevron-left" /> All Category</div>
       </div>
     </div>
   </div>
