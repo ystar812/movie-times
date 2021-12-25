@@ -17,17 +17,29 @@ export default {
       showList: false
     }
   },
-  async created(){
-    // TMDB discover API
-    var apiUrl = `${process.env.VUE_APP_API_BASEURL}discover/movie?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1-3&primary_release_year=2016`;
-    await this.$http.get(apiUrl).then((response) => {
-      // console.log(response.data.results);
-      this.movies = response.data.results;
-    });
-    this.showList = true;
+  created(){
+    this.getAllData();
+  },
+  computed:{
+    language(){
+      return this.$cookies.get('language');
+    },
+  },
+  watch:{
+    language(){
+      this.getAllData();
+    }
   },
   methods:{
-    
+    getAllData(){
+      // TMDB discover API
+      var apiUrl = `${process.env.VUE_APP_API_BASEURL}discover/movie?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&sort_by=popularity.desc&include_adult=false&include_video=false&page=1-3&primary_release_year=2016`;
+      this.$http.get(apiUrl).then((response) => {
+        // console.log(response.data.results);
+        this.movies = response.data.results;
+      });
+      this.showList = true;
+    }
   },
   components:{
     Item

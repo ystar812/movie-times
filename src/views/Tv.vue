@@ -4,7 +4,7 @@
       <div class="d_title">{{ tvDetail.name }}</div>
       <div class="d_release_date">{{ tvDetail.last_air_date }}</div>
       <div class="d_row">
-        <div class="d_label">TV</div>
+        <div class="d_label">{{ lable }}</div>
         <div class="d_vote_average">{{ tvDetail.vote_average }}</div>
         <div class="d_genres">
           <div class="genre" v-for="(item, key) in tvDetail.genres" :key="key">
@@ -39,29 +39,41 @@ export default {
     return{
       tvDetail: {},
       tvCredits: {},
-      mainActors: []
+      mainActors: [],
+      lable: ''
     }
   },
   created(){
-    var tvId = this.$route.params.id;
-    this.$http.all([this.getTvDetail(tvId), this.getTvCredits(tvId)]).then((results) => {
-      // console.log(results[0].data);
-      this.tvDetail = results[0].data;
-      this.tvCredits = results[1].data;
-      this.mainActors = this.tvCredits.cast.slice(0, 8);
-    });
+    this.getAllData();
   },
   computed:{
-    
+    language(){
+      return this.$cookies.get('language');
+    },
+  },
+  watch:{
+    language(){
+      this.getAllData();
+    }
   },
   methods:{
     // TMDB Tv Get Details API
     getTvDetail(id){
-      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}tv/${id}?api_key=${process.env.VUE_APP_API_KEY}&language=en-US`)
+      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}tv/${id}?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}`)
     },
     // TMDB Tv Get Credits API
     getTvCredits(id){
-      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}tv/${id}/credits?api_key=${process.env.VUE_APP_API_KEY}&language=en-US`)
+      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}tv/${id}/credits?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}`)
+    },
+    getAllData(){
+      let tvId = this.$route.params.id;
+      this.$http.all([this.getTvDetail(tvId), this.getTvCredits(tvId)]).then((results) => {
+        // console.log(results[0].data);
+        this.tvDetail = results[0].data;
+        this.tvCredits = results[1].data;
+        this.mainActors = this.tvCredits.cast.slice(0, 8);
+      });
+      this.language == 'en-US' ? this.lable = 'TV' : this.lable = '影集'
     }
   },
   components:{

@@ -120,10 +120,10 @@ export default {
             right: 0
             width: 60%
             text-align: right
-            padding: 6%
+            padding: 6% 6% 5% 6%
             z-index: 3
             @include laptop
-              padding: 4%
+              padding: 4% 5%
             @include mobile
               width: 100%
               padding: 0 11% 5% 11%
@@ -181,5 +181,16 @@ export default {
         right: 0
         @include mobile
           background: linear-gradient(to left, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0) 100%)
+
+#app
+  &.ch
+    .item_title
+      font-weight: bold
+      margin-bottom: 12px
+      @include laptop
+        font-size: 25px
+        margin-bottom: 10px
+    .item_overview
+      line-height: 1.3
 
 </style>

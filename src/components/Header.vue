@@ -5,19 +5,26 @@
     </router-link>
     <nav :class="{open:openMenu}">
       <ul>
-        <li><router-link to="/movies" @click.native="mobileOpenMenu">MOVIES</router-link></li>
-        <li><router-link to="/" @click.native="mobileOpenMenu">TV SHOW</router-link></li>
-        <li><router-link to="/" @click.native="mobileOpenMenu">CELEBS</router-link></li>
+        <li><router-link to="/movies" @click.native="mobileOpenMenu">{{menuItems[0]}}</router-link></li>
+        <li><router-link to="/" @click.native="mobileOpenMenu">{{menuItems[1]}}</router-link></li>
+        <li><router-link to="/" @click.native="mobileOpenMenu">{{menuItems[2]}}</router-link></li>
       </ul>
     </nav>
-    <div class="search_box">
-      <input type="text" placeholder="search" ref="search" v-model.trim="searchKeyword" @keydown.enter="goSearch">
-        <!-- <router-link :to="`/search?keyword=${searchKeyword}`" class="search_btn"> -->
-        <!-- 上面這行<router-link :to="...">等同於 <div @click="goSearch"> 不一定要div 隨便一個標籤都可" -->
-        <div class="search_btn" @click="goSearch">
-          <div class="search_icon"><font-awesome-icon icon="search" /></div>
-        </div>
-        <!-- </router-link> -->
+    <div class="r_box">
+      <div class="search_box">
+        <input type="text" placeholder="search" ref="search" v-model.trim="searchKeyword" @keydown.enter="goSearch">
+          <!-- <router-link :to="`/search?keyword=${searchKeyword}`" class="search_btn"> -->
+          <!-- 上面這行<router-link :to="...">等同於 <div @click="goSearch"> 不一定要div 隨便一個標籤都可" -->
+          <div class="search_btn" @click="goSearch">
+            <div class="search_icon"><font-awesome-icon icon="search" /></div>
+          </div>
+          <!-- </router-link> -->
+      </div>
+      <div class="language_trigger" @click="changeLanguage">{{ lanLabel }}</div>
+      <div class="language">
+        <div @click="lanCH" :class="{current:language=='zh-TW'}">中</div>
+        <div @click="lanEN" :class="{current:language=='en-US'}">EN</div>
+      </div>
     </div>
     <div class="m_menu_btn" :class="{active:openMenu}" @click="mobileOpenMenu">
       <div class="mmb_t"></div>
@@ -34,15 +41,47 @@ export default {
   data(){
     return{
       openMenu: false,
-      searchKeyword: ''
+      searchKeyword: '',
+      lanLabel: '',
+      menuItems: []
     }
   },
   computed: {
-    
+    language(){
+      return this.$cookies.get('language');
+    }
+  },
+  mounted(){
+    this.changeText();
+  },
+  watch:{
+    language(){
+      this.changeText();
+    }
   },
   methods:{
     mobileOpenMenu(){
       this.openMenu = !this.openMenu
+    },
+    lanCH(){
+      this.$cookies.set('language','zh-TW');
+      // this.$store.dispatch('updateLanguage', 'zh-TW');
+    },
+    lanEN(){
+      this.$cookies.set('language','en-US');
+      // this.$store.dispatch('updateLanguage', 'en-US');
+    },
+    changeLanguage(){
+      this.language == 'en-US' ? this.$cookies.set('language','zh-TW') : this.$cookies.set('language','en-US')
+    },
+    changeText(){
+      if (this.language == 'en-US') {
+        this.lanLabel = 'EN'
+        this.menuItems = ['MOVIES', 'TV SHOW', 'CELEBS']
+      }else{
+        this.lanLabel = '中'
+        this.menuItems = ['電影', '影集', '名人']
+      }
     },
     goSearch(){
       if (this.searchKeyword !== ''){
@@ -75,7 +114,8 @@ header
   @include laptop
     padding: 10px 2%
   @include mobile
-    padding: 8px
+    height: 60px
+    padding: 7px
     backdrop-filter: none
     background-color: rgba(0,0,0,1)
   *
@@ -86,7 +126,8 @@ header
     @include laptop
       width: 100px
     @include mobile
-      width: 94px
+      width: 80px
+      margin-top: 5px
     img
       width: 100%
   nav
@@ -127,46 +168,82 @@ header
           @include mobile
             width: 100%
             padding: 20px
-  .search_box
+  .r_box
     float: right
     margin-top: 12px
     @include laptop
       margin-top: 5px
     @include mobile
-      margin: 6px 43px 0 0
-    input
-      width: 400px
+      margin: 7px 48px 0 0
+    .language_trigger
+      display: none
       @include mobile
-        width: calc(100vw - 203px)
-      @include phone
-        width: calc(100vw - 193px)
-    .search_btn
-      display: flex
-      justify-content: center
-      align-items: center
-      width: 38px
-      height: 36px
-      cursor: pointer
+        display: block
+        width: 30px
+        height: 28px
+        font-size: 12px
+        text-align: center
+        padding-top: 4px
+        margin-top: 4px
+        border-radius: 3px
+        border: 1px solid rgba(255,255,255,.6)
+    .language
+      margin-top: 3px
       @include mobile
+        display: none
+      div
+        font-size: 14px
         width: 32px
-        height: 32px
-      .search_icon
-        font-size: 20px
+        text-align: center
+        padding: 4px 0
+        margin: 0 3px
+        border-radius: 3px
+        cursor: pointer
+        transition: .2s
+        &:hover
+          background-color: rgba(255,255,255,.3)
+        &.current
+          color: #000
+          background-color: rgba(255,255,255,.9)
+        @include laptop
+          width: 30px
+          font-size: 13px
+          padding: 3px 0
+    .search_box
+      margin-right: 10px
+      @include mobile
+        margin-right: 5px
+      input
+        width: 380px
         @include mobile
-          font-size: 18px
+          width: calc(100vw - 214px)
+      .search_btn
+        display: flex
+        justify-content: center
+        align-items: center
+        width: 38px
+        height: 36px
+        cursor: pointer
+        @include mobile
+          width: 32px
+          height: 32px
+        .search_icon
+          font-size: 20px
+          @include mobile
+            font-size: 17px
   .m_menu_btn
     @include mobile
       display: block
       position: absolute
       top: 0
       right: 0
-      width: 60px
+      width: 50px
       height: 60px
       z-index: 30
       div
         position: absolute
         display: block
-        left: 20px
+        left: 12px
         width: 22px
         height: 2px
         background-color: #fff
@@ -199,5 +276,11 @@ header
       z-index: 10
       &.active
         display: block
+
+#app
+  &.ch
+    .language_trigger
+      @include mobile
+        font-size: 13px
 
 </style>

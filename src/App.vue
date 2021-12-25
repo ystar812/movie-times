@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="lanClass">
     <Header></Header>
     <main>
       <router-view/>
@@ -11,6 +11,39 @@
 import Header from './components/Header.vue'
 
 export default {
+  data(){
+    return{
+      lanClass:{
+        en: false,
+        ch: false
+      }
+    }
+  },
+  created(){
+    this.$cookies.get('language') ? false : this.$cookies.set('language','en-US');
+    this.addLanguageClass();
+  },
+  computed:{
+    language(){
+      return this.$cookies.get('language');
+    },
+  },
+  watch:{
+    language(){
+      this.addLanguageClass();
+    }
+  },
+  methods:{
+    addLanguageClass(){
+      if (this.language == 'en-US') {
+        this.lanClass.en = true;
+        this.lanClass.ch = false;
+      }else{
+        this.lanClass.en = false;
+        this.lanClass.ch = true;
+      }
+    }
+  },
   components:{
     Header
   }
@@ -20,7 +53,7 @@ export default {
 
 <style lang="sass">
 
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&family=Oswald:wght@300;400&display=swap')
 
 html
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0)
@@ -30,7 +63,7 @@ html, body
   margin: 0
 
 body
-  font-family: Arial, Helvetica, sans-serif
+  font-family: Arial, Helvetica, 'Noto Sans TC', sans-serif
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   color: #fff
@@ -186,10 +219,10 @@ input[type=text]
     background-color: rgba(255,255,255,1)
   @include mobile
     height: 32px
-    background-color: rgba(255,255,255,0.18)
+    background-color: rgba(255,255,255,0.15)
 
 ::-webkit-input-placeholder
-    color: #aaa
+    color: #8e8e8e
 
 .content
   padding: 2% 60px
@@ -318,8 +351,8 @@ input[type=text]
           line-height: 27px
           padding: 0 9px
         @include mobile
-          height: 24px
-          line-height: 26px
+          // height: 24px
+          // line-height: 26px
           margin: 0 -1px 10px 0
           background-color: #eaeaea
       .d_vote_average
@@ -342,9 +375,9 @@ input[type=text]
           padding: 0 10px
           margin: 0 13px 12px 0
         @include mobile
-          height: 24px
+          // height: 24px
           font-size: 14px
-          line-height: 22px
+          // line-height: 22px
           margin: 0 11px 10px 0
           border-color: #eaeaea
       .d_genres
@@ -370,9 +403,10 @@ input[type=text]
         @include mobile
           margin-bottom: 10px
         svg
-          margin-right: 2px
+          margin-right: 3px
     .d_overview
       width: 29%
+      color: #f0f0f0
       font-size: 1.14vw
       @include laptop
         font-size: 15px
@@ -559,5 +593,44 @@ input[type=text]
         &:before
           content: '... '
 
+#app
+  &.ch
+    font-size: 16px
+    .title
+      font-size: 28px
+      @include laptop
+        font-size: 22px
+      @include mobile
+        font-size: 20px
+    .subtitle
+      font-size: 26px
+      @include laptop
+        font-size: 20px
+        .total_results
+          font-size: 15px
+      @include mobile
+        font-size: 18px
+    .d_info
+      margin-bottom: 20px
+      @include mobile
+        margin-bottom: 30px
+    .d_title
+      font-size: 3vw;
+      font-weight: bold
+      @include mobile
+        font-size: 26px
+    .d_overview
+      font-size: 1.11vw
+      line-height: 1.5
+      margin-top: 5px
+      @include mobile
+        font-size: 15px
+    .d_credits_title
+      font-size: 1.4vw
+      @include mobile
+        font-size: 20px
+    .btn
+      font-size: 15px
+      padding: 8px 16px;
 
 </style>

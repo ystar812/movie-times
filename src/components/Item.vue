@@ -77,7 +77,7 @@
     position: relative
     overflow: hidden
     padding-bottom: 150%
-    margin-bottom: 10px
+    margin-bottom: 11px
   .item_row
     margin-bottom: 5px
     @include mobile

@@ -3,19 +3,19 @@
     <Banner :bannerImages="newMovies"/>
     <div class="content">
       <div class="row_box">
-        <div class="title">Now Playing Movies</div>
+        <div class="title">{{title[0]}}</div>
         <div class="slider_box">
           <Slider :sliderData="newMovies" :sIndex="'s1'" />
         </div>
       </div>
       <div class="row_box">
-        <div class="title">Popular TV Shows</div>
+        <div class="title">{{title[1]}}</div>
         <div class="slider_box">
           <Slider :sliderData="popTvShows" :sIndex="'s2'" />
         </div>
       </div>
       <div class="row_box">
-        <div class="title">Popular Celebs</div>
+        <div class="title">{{title[2]}}</div>
         <div class="slider_box">
           <Slider :sliderData="popCelebs" :sIndex="'s3'" />
         </div>
@@ -37,32 +37,47 @@ export default {
       newMovies: [],
       popTvShows: [],
       popCelebs: [],
-      // showList: false
+      title: []
     }
   },
-  async created(){
-    const now = new Date();
-    const today = now.toISOString().split('T')[0];
-    const lastMonth = new Date(now.setDate(now.getDate() - 30)).toISOString().split('T')[0];
-    // TMDB discover API
-    this.$http.all([this.getNewMovies(lastMonth,today),this.getPopTvShows(),this.getPopCelebs()]).then((results) => {
-      this.newMovies = results[0].data.results;
-      this.popTvShows = results[1].data.results;
-      this.popCelebs = results[2].data.results;
-      // this.showList = true
-    });
+  created(){
+    this.getAllData();
+  },
+  computed:{
+    language(){
+      // return this.$store.state.language;
+      return this.$cookies.get('language');
+    },
+  },
+  watch:{
+    language(){
+      this.getAllData();
+    }
   },
   methods:{
-    // TMDB Movie Discover API(New Movies in this month)
+    // TMDB Discover Movie Discover API(new movies in this month)
     getNewMovies(gte, lte){
-      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}discover/movie?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_date.gte=${gte}&primary_release_date.lte=${lte}&with_watch_monetization_types=flatrate`)
+      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}discover/movie?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_date.gte=${gte}&primary_release_date.lte=${lte}&with_watch_monetization_types=flatrate`)
     },
+    // TMDB Discover TV Discover API(popular TV)
     getPopTvShows(){
-      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}discover/tv?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&sort_by=popularity.desc&page=1&timezone=America%2FNew_York&include_null_first_air_withwatch0=false_withwatch0`)
+      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}discover/tv?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&sort_by=popularity.desc&page=1&timezone=America%2FNew_York&include_null_first_air_withwatch0=false_withwatch0`)
     },
+    // TMDB People Get Popular API(popular people)
     getPopCelebs(){
-      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}person/popular?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&page=1`)
+      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}person/popular?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&page=1`)
     },
+    getAllData(){
+      const now = new Date();
+      const today = now.toISOString().split('T')[0];
+      const lastMonth = new Date(now.setDate(now.getDate() - 30)).toISOString().split('T')[0];
+      this.$http.all([this.getNewMovies(lastMonth,today),this.getPopTvShows(),this.getPopCelebs()]).then((results) => {
+        this.newMovies = results[0].data.results;
+        this.popTvShows = results[1].data.results;
+        this.popCelebs = results[2].data.results;
+      });
+      this.language == 'en-US' ? this.title = ['Now Playing Movies','Popular TV Shows','Popular Celebs'] : this.title = ['最新熱門電影','熱門影集','熱門名人'];
+    }
   },
   components:{
     Banner,

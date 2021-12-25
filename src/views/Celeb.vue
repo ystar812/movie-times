@@ -9,17 +9,17 @@
       </div>
       <div class="celeb_info">
         <div class="celeb_name">{{ celebDetail.name }}</div>
-        <div class="celeb_title">Personal Info</div>
+        <div class="celeb_title">{{pageText[0]}}</div>
         <div class="celeb_row">
-          <div class="celeb_sub_title">Known For</div>
+          <div class="celeb_sub_title">{{pageText[1]}}</div>
           <div class="celeb_row_con">{{ celebDetail.known_for_department }}</div>
         </div>
         <div class="celeb_row">
-          <div class="celeb_sub_title">Birthday</div>
+          <div class="celeb_sub_title">{{pageText[2]}}</div>
           <div class="celeb_row_con">{{ celebDetail.birthday }}</div>
         </div>
         <div class="celeb_row">
-          <div class="celeb_sub_title">Place of Birth</div>
+          <div class="celeb_sub_title">{{pageText[3]}}</div>
           <div class="celeb_row_con">{{ celebDetail.place_of_birth }}</div>
         </div>
       </div>
@@ -27,16 +27,16 @@
     <div class="celeb_con_box">
       <div class="celeb_name">{{ celebDetail.name }}</div>
       <div class="celeb_block">
-        <div class="celeb_title">Biography</div>
+        <div class="celeb_title">{{pageText[4]}}</div>
         <div class="celeb_biography_box">
           <div class="celeb_biography" :class="{truncate}" ref="biography">
             {{ celebDetail.biography }}
           </div>
-          <div class="read_more" :class="{show:truncate}" @click="openBiography()">Read More <font-awesome-icon icon="chevron-right" /></div>
+          <div class="read_more" :class="{show:truncate}" @click="openBiography()">{{pageText[6]}} <font-awesome-icon icon="chevron-right" /></div>
         </div>
       </div>
       <div class="celeb_block">
-        <div class="celeb_title">Known For</div>
+        <div class="celeb_title">{{pageText[5]}}</div>
         <div class="celeb_known_for" :class="{show:showknownFor}">
           <Item v-for="(item, key) in knownFor" :key="key" :sItem="item" />
         </div>
@@ -56,43 +56,58 @@ export default {
       celebCombinedCredits: {},
       knownFor: [],
       truncate: false,
-      showknownFor: false
+      showknownFor: false,
+      pageText: []
     }
   },
   created(){
-    var celebId = this.$route.params.id;
-    this.$http.all([this.getCelebDetail(celebId), this.getCelebCombined(celebId)]).then((results) => {
-      // console.log(results[1].data);
-      this.celebDetail = results[0].data;
-      this.celebCombinedCredits = results[1].data;
-      if (this.celebCombinedCredits.cast.length > this.celebCombinedCredits.crew.length) {
-        this.knownFor = this.celebCombinedCredits.cast.sort(function (a, b) {
-          return a.vote_count < b.vote_count ? 1 : -1;
-        }).slice(0, 10);
-      }else{
-        this.knownFor = this.celebCombinedCredits.crew.filter(item =>{
-          return item.job == 'Director'
-        }).sort(function (a, b) {
-          return a.vote_count < b.vote_count ? 1 : -1;
-        }).slice(0, 10);
-      }
-      // nextTick()會在DOM已掛載、渲染完成後，執行nextTick()內的程式碼
-      this.$nextTick(() => {
-        if (this.$refs.biography.clientHeight > 200){
-          this.truncate = true;
-        }
-        this.showknownFor = true;
-      });
-    });
+    this.getAllData();
+  },
+  computed:{
+    language(){
+      return this.$cookies.get('language');
+    },
+  },
+  watch:{
+    language(){
+      this.getAllData();
+    }
   },
   methods:{
     // TMDB People Get Details API
     getCelebDetail(id){
-      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}person/${id}?api_key=${process.env.VUE_APP_API_KEY}&language=en-US`)
+      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}person/${id}?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}`)
     },
     // TMDB People Get Combined Credits API
     getCelebCombined(id){
-      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}person/${id}/combined_credits?api_key=${process.env.VUE_APP_API_KEY}&language=en-US`)
+      return this.$http.get(`${process.env.VUE_APP_API_BASEURL}person/${id}/combined_credits?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}`)
+    },
+    getAllData(){
+      var celebId = this.$route.params.id;
+      this.$http.all([this.getCelebDetail(celebId), this.getCelebCombined(celebId)]).then((results) => {
+        // console.log(results[1].data);
+        this.celebDetail = results[0].data;
+        this.celebCombinedCredits = results[1].data;
+        if (this.celebCombinedCredits.cast.length > this.celebCombinedCredits.crew.length) {
+          this.knownFor = this.celebCombinedCredits.cast.sort(function (a, b) {
+            return a.vote_count < b.vote_count ? 1 : -1;
+          }).slice(0, 10);
+        }else{
+          this.knownFor = this.celebCombinedCredits.crew.filter(item =>{
+            return item.job == 'Director'
+          }).sort(function (a, b) {
+            return a.vote_count < b.vote_count ? 1 : -1;
+          }).slice(0, 10);
+        }
+        // nextTick()會在DOM已掛載、渲染完成後，執行nextTick()內的程式碼
+        this.$nextTick(() => {
+          if (this.$refs.biography.clientHeight > 200){
+            this.truncate = true;
+          }
+          this.showknownFor = true;
+        });
+      });
+      this.language == 'en-US' ? this.pageText = ['Personal Info','Known For','Birthday','Place of Birth','Biography','Known For','Read More'] : this.pageText = ['個人資訊','聞名於','生日','出生地','個人簡介','影視作品','更多'];
     },
     openBiography(){
       this.truncate = false;
@@ -171,6 +186,7 @@ export default {
     .celeb_biography_box
       position: relative
       .celeb_biography
+        color: #f0f0f0
         overflow: hidden
         &.truncate
           height: 200px
@@ -216,5 +232,12 @@ export default {
         @include mobile
           flex: 0 0 50%
           padding: 15px 10px
+
+#app
+  &.ch
+    .celeb_biography
+      line-height: 1.5
+      @include laptop
+        font-size: 15px
 
 </style>
