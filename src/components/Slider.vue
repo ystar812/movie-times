@@ -53,15 +53,13 @@ export default {
   },
   mounted(){
     let vm = this;
-    if (vm.sliderData.length > 1){
-      vm.swiper.on('slideChangeTransitionStart', function () {
-        if (vm.swiper.realIndex > 0){
-          vm.showAfter = false
-        }else if(vm.swiper.realIndex == 0){
-          vm.showAfter = true
-        }
-      });
-    }
+    vm.swiper.on('slideChangeTransitionStart', function () {
+      if (vm.swiper.realIndex > 0){
+        vm.showAfter = false
+      }else if(vm.swiper.realIndex == 0){
+        vm.showAfter = true
+      }
+    });
   },
   // 以下寫法是到updated()再做 vm.swiper.init(); 可以避免loop失效  但在Search頁面用 this.$http.all 時會無法抓到 swiper 導致無法init() 目前還不知原因所以先用預設直接在swiperOption中init()
   // async updated(){
