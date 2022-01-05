@@ -34,7 +34,7 @@ export default {
   },
   methods:{
     getAllData(){
-      // TMDB discover API
+      // TMDB People Get Popular API(popular people)
       var apiUrl = `${process.env.VUE_APP_API_BASEURL}person/popular?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&page=1`;
       this.$http.get(apiUrl).then((response) => {
         // console.log(response.data.results);

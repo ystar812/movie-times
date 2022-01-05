@@ -34,8 +34,11 @@ export default {
   },
   methods:{
     getAllData(){
-      // TMDB discover API
-      var apiUrl = `${process.env.VUE_APP_API_BASEURL}discover/movie?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&sort_by=popularity.desc&include_adult=false&include_video=false&page=1-3&primary_release_year=2016`;
+      const now = new Date();
+      const today = now.toISOString().split('T')[0];
+      const lastMonth = new Date(now.setDate(now.getDate() - 30)).toISOString().split('T')[0];
+      // TMDB Discover Movie Discover API(new movies in this month)
+      var apiUrl = `${process.env.VUE_APP_API_BASEURL}discover/movie?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_date.gte=${lastMonth}&primary_release_date.lte=${today}&with_watch_monetization_types=flatrate`;
       this.$http.get(apiUrl).then((response) => {
         // console.log(response.data.results);
         this.movies = response.data.results;

@@ -34,7 +34,7 @@ export default {
   },
   methods:{
     getAllData(){
-      // TMDB discover API
+      // TMDB Discover TV Discover API(popular TV)
       var apiUrl = `${process.env.VUE_APP_API_BASEURL}discover/tv?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&sort_by=popularity.desc&page=1&timezone=America%2FNew_York&include_null_first_air_withwatch0=false_withwatch0`;
       this.$http.get(apiUrl).then((response) => {
         // console.log(response.data.results);
