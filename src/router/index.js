@@ -9,7 +9,9 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Movies from '../views/Movies.vue'
 import Movie from '../views/Movie.vue'
+import TvShows from '../views/TvShows.vue'
 import Tv from '../views/Tv.vue'
+import Celebs from '../views/Celebs.vue'
 import Celeb from '../views/Celeb.vue'
 import Search from '../views/Search.vue'
 
@@ -22,7 +24,7 @@ const routes = [
     component: Home
   },
   {
-    path: '/movies',
+    path: '/movie',
     name: 'Movies',
     component: Movies
   },
@@ -32,9 +34,19 @@ const routes = [
     component: Movie
   },
   {
+    path: '/tv',
+    name: 'TvShows',
+    component: TvShows
+  },
+  {
     path: '/tv/:id',
     name: 'Tv',
     component: Tv
+  },
+  {
+    path: '/celeb',
+    name: 'Celebs',
+    component: Celebs
   },
   {
     path: '/celeb/:id',

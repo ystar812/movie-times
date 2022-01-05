@@ -2,7 +2,7 @@
   <div class="content">
     <div class="title s2">{{title}}</div>
     <div class="list_box" :class="{show:showList}">
-      <Item v-for="(item, key) in movies" :key="key" :sItem="item" />
+      <Item v-for="(item, key) in celebs" :key="key" :sItem="item" />
     </div>
   </div>
 </template>
@@ -11,10 +11,10 @@
 import Item from '../components/Item.vue'
 
 export default {
-  name: 'Movies',
+  name: 'Celebs',
   data(){
     return{
-      movies: [],
+      celebs: [],
       title: '',
       showList: false
     }
@@ -35,12 +35,12 @@ export default {
   methods:{
     getAllData(){
       // TMDB discover API
-      var apiUrl = `${process.env.VUE_APP_API_BASEURL}discover/movie?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&sort_by=popularity.desc&include_adult=false&include_video=false&page=1-3&primary_release_year=2016`;
+      var apiUrl = `${process.env.VUE_APP_API_BASEURL}person/popular?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&page=1`;
       this.$http.get(apiUrl).then((response) => {
         // console.log(response.data.results);
-        this.movies = response.data.results;
+        this.celebs = response.data.results;
       });
-      this.language == 'en-US' ? this.title = 'Now Playing Movies' : this.title = '最新熱門電影';
+      this.language == 'en-US' ? this.title = 'Popular Celebs' : this.title = '熱門名人';
       this.showList = true;
     }
   },

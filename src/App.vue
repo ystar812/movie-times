@@ -267,6 +267,9 @@ input[type=text]
   @include mobile
     font-size: 26px
     padding: 0 10px 10px 10px
+  &.s2
+    @include mobile
+      padding: 20px 0 10px 6px
 
 .subtitle
   font-family: 'Oswald'

@@ -5,9 +5,9 @@
     </router-link>
     <nav :class="{open:openMenu}">
       <ul>
-        <li><router-link to="/movies" @click.native="mobileOpenMenu">{{menuItems[0]}}</router-link></li>
-        <li><router-link to="/" @click.native="mobileOpenMenu">{{menuItems[1]}}</router-link></li>
-        <li><router-link to="/" @click.native="mobileOpenMenu">{{menuItems[2]}}</router-link></li>
+        <li><router-link to="/movie" @click.native="mobileOpenMenu">{{menuItems[0]}}</router-link></li>
+        <li><router-link to="/tv" @click.native="mobileOpenMenu">{{menuItems[1]}}</router-link></li>
+        <li><router-link to="/celeb" @click.native="mobileOpenMenu">{{menuItems[2]}}</router-link></li>
       </ul>
     </nav>
     <div class="r_box">
@@ -77,7 +77,7 @@ export default {
     changeText(){
       if (this.language == 'en-US') {
         this.lanLabel = 'EN'
-        this.menuItems = ['MOVIES', 'TV SHOW', 'CELEBS']
+        this.menuItems = ['MOVIES', 'TV SHOWS', 'CELEBS']
       }else{
         this.lanLabel = '中'
         this.menuItems = ['電影', '影集', '名人']
