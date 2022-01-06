@@ -547,6 +547,10 @@ input[type=text]
 .pagination
   text-align: center
   margin-bottom: 40px
+  opacity: 0
+  transition: opacity .3s
+  &.show
+    opacity: 1
   div
     display: inline-block
     vertical-align: top

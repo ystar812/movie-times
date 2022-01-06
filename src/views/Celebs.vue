@@ -4,11 +4,13 @@
     <div class="list_box" :class="{show:showList}">
       <Item v-for="(item, key) in celebs" :key="key" :sItem="item" />
     </div>
+    <Pagination @updatePage="newPage" :class="{show:showList}"/>
   </div>
 </template>
 
 <script>
 import Item from '../components/Item.vue'
+import Pagination from '../components/Pagination.vue'
 
 export default {
   name: 'Celebs',
@@ -16,7 +18,8 @@ export default {
     return{
       celebs: [],
       title: '',
-      showList: false
+      showList: false,
+      page: ''
     }
   },
   created(){
@@ -29,23 +32,32 @@ export default {
   },
   watch:{
     language(){
-      this.getAllData();
+      this.getAllData(this.page);
+    },
+    page(value){
+      this.getAllData(value);
     }
   },
   methods:{
-    getAllData(){
+    async getAllData(p){
+      this.showList = false;
       // TMDB People Get Popular API(popular people)
-      var apiUrl = `${process.env.VUE_APP_API_BASEURL}person/popular?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&page=1`;
-      this.$http.get(apiUrl).then((response) => {
+      var apiUrl = `${process.env.VUE_APP_API_BASEURL}person/popular?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&page=${p}`;
+      await this.$http.get(apiUrl).then((response) => {
         // console.log(response.data.results);
         this.celebs = response.data.results;
       });
       this.language == 'en-US' ? this.title = 'Popular Celebs' : this.title = '熱門名人';
       this.showList = true;
+      window.scrollTo(0,0);
+    },
+    newPage(val){
+      this.page = val
     }
   },
   components:{
-    Item
+    Item,
+    Pagination
   }
 }
 </script>

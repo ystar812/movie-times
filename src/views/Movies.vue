@@ -4,11 +4,13 @@
     <div class="list_box" :class="{show:showList}">
       <Item v-for="(item, key) in movies" :key="key" :sItem="item" />
     </div>
+    <Pagination @updatePage="newPage" :class="{show:showList}"/>
   </div>
 </template>
 
 <script>
 import Item from '../components/Item.vue'
+import Pagination from '../components/Pagination.vue'
 
 export default {
   name: 'Movies',
@@ -16,7 +18,8 @@ export default {
     return{
       movies: [],
       title: '',
-      showList: false
+      showList: false,
+      page: ''
     }
   },
   created(){
@@ -29,26 +32,35 @@ export default {
   },
   watch:{
     language(){
-      this.getAllData();
+      this.getAllData(this.page);
+    },
+    page(value){
+      this.getAllData(value);
     }
   },
   methods:{
-    getAllData(){
+    async getAllData(p){
+      this.showList = false;
       const now = new Date();
       const today = now.toISOString().split('T')[0];
       const lastMonth = new Date(now.setDate(now.getDate() - 30)).toISOString().split('T')[0];
       // TMDB Discover Movie Discover API(new movies in this month)
-      var apiUrl = `${process.env.VUE_APP_API_BASEURL}discover/movie?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_date.gte=${lastMonth}&primary_release_date.lte=${today}&with_watch_monetization_types=flatrate`;
-      this.$http.get(apiUrl).then((response) => {
+      var apiUrl = `${process.env.VUE_APP_API_BASEURL}discover/movie?api_key=${process.env.VUE_APP_API_KEY}&language=${this.language}&sort_by=popularity.desc&include_adult=false&include_video=false&page=${p}&primary_release_date.gte=${lastMonth}&primary_release_date.lte=${today}&with_watch_monetization_types=flatrate`;
+      await this.$http.get(apiUrl).then((response) => {
         // console.log(response.data.results);
         this.movies = response.data.results;
       });
       this.language == 'en-US' ? this.title = 'Now Playing Movies' : this.title = '最新熱門電影';
       this.showList = true;
+      window.scrollTo(0,0);
+    },
+    newPage(val){
+      this.page = val
     }
   },
   components:{
-    Item
+    Item,
+    Pagination
   }
 }
 </script>

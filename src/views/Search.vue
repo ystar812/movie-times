@@ -29,7 +29,7 @@
       <div class="list_box" :class="{show:showList}">
         <Item v-for="(item, key) in sResults.results" :key="key" :sItem="item" />
       </div>
-      <div class="pagination" :class="pageClass">
+      <div class="pagination show" :class="pageClass">
         <div @click="moreResults(keyword,category,page-1)"><font-awesome-icon icon="chevron-left" /></div>
         <div v-for="(item, key) in pagination" :key="key" :class="{current: item == page }" @click="moreResults(keyword,category,item)">{{ item }}</div>
         <div @click="moreResults(keyword,category,page+1)"><font-awesome-icon icon="chevron-right" /></div>
