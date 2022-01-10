@@ -10,7 +10,8 @@
                 <div class="item_overview">{{ item.overview }}</div>
               </div>
               <div class="item_img">
-                <img :src="`https://image.tmdb.org/t/p/original${item.backdrop_path}`" @load="imgLoaded()">
+                <img v-if="!item.backdrop_path" src="../assets/img/imgNull_movie.svg" class="imgNull">
+                <img v-else :src="`https://image.tmdb.org/t/p/original${item.backdrop_path}`" @load="imgLoaded()">
               </div>
             </router-link>
           </div>
@@ -156,6 +157,10 @@ export default {
               padding-bottom: 66%
             img
               transform: scale(1)
+              &.imgNull
+                top: 38%
+                width: auto
+                height: 36%
           a
             &:after
               content: ''
