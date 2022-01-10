@@ -160,7 +160,7 @@ export default {
               &.imgNull
                 top: 38%
                 width: auto
-                height: 36%
+                height: 32%
           a
             &:after
               content: ''

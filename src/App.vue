@@ -116,7 +116,7 @@ main
       top: 50%
       left: 50%
       width: 50%
-      height: 50%
+      height: auto
       opacity: .2
       transform: scale(1) translate(-50%, -50%) !important
   .item_img, .celeb_img
@@ -436,13 +436,13 @@ input[type=text]
     img
       &.imgNull
         width: 120px
-        height: 120px
+        height: auto
         @include laptop
           width: 100px
-          height: 100px
+          height: auto
         @include mobile
           width: 80px
-          height: 80px
+          height: auto
     &:before
       content: ''
       position: absolute

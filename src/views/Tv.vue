@@ -16,7 +16,7 @@
       <div class="d_overview">{{ tvDetail.overview }}</div>
     </div>
     <div v-if="'backdrop_path' in tvDetail" class="d_img" :class="{hideBg:!tvDetail.backdrop_path}">
-      <img v-if="!tvDetail.backdrop_path" src="../assets/img/imgNull_movie.svg" class="imgNull">
+      <img v-if="!tvDetail.backdrop_path" src="../assets/img/imgNull_tv.svg" class="imgNull">
       <img v-else v-lazy="`https://image.tmdb.org/t/p/original${tvDetail.backdrop_path}`" :key="`https://image.tmdb.org/t/p/original${tvDetail.backdrop_path}`">
     </div>
     <div class="d_credits">
