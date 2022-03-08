@@ -216,6 +216,8 @@ header
       input
         width: 380px
         @include mobile
+          width: calc(100vw - 235px)
+        @include phone
           width: calc(100vw - 214px)
       .search_btn
         display: flex

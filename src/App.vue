@@ -622,7 +622,7 @@ input[type=text]
       @include mobile
         margin-bottom: 30px
     .d_title
-      font-size: 3vw;
+      font-size: 3vw
       font-weight: bold
       @include mobile
         font-size: 26px
@@ -638,6 +638,6 @@ input[type=text]
         font-size: 20px
     .btn
       font-size: 15px
-      padding: 8px 16px;
+      padding: 8px 16px
 
 </style>
