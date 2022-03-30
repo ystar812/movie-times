@@ -32,27 +32,16 @@
   export default {
     name: 'Item',
     props: ['sItem'],
-    data(){
-      return{
-        linkPath: ''
-      }
-    },
-    mounted(){
-      this.specifyLinkPath()
-    },
-    watch:{
-      sItem: function(){
-        this.specifyLinkPath()
-      }
-    },
-    methods:{
-      specifyLinkPath(){
+    computed:{
+      linkPath(){
         if (this.sItem.release_date){
-          this.linkPath = 'movie'
+          return 'movie'
         }else if (this.sItem.known_for_department){
-          this.linkPath = 'celeb'
+          return 'celeb'
         }else if (this.sItem.first_air_date){
-          this.linkPath = 'tv'
+          return 'tv'
+        }else{
+          return ''
         }
       }
     }
