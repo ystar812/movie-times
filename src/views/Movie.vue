@@ -5,7 +5,7 @@
       <div class="d_release_date">{{ movieDetail.release_date }}</div>
       <div class="d_row">
         <div class="d_label">{{ lable }}</div>
-        <div class="d_vote_average">{{ movieDetail.vote_average }}</div>
+        <div class="d_vote_average">{{ movieDetail.vote_average.toFixed(1) }}</div>
         <div class="d_genres">
           <div class="genre" v-for="(item, key) in movieDetail.genres" :key="key">
             {{ item.name }}
