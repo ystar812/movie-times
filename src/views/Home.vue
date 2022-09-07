@@ -72,9 +72,9 @@ export default {
       const today = now.toISOString().split('T')[0];
       const lastMonth = new Date(now.setDate(now.getDate() - 30)).toISOString().split('T')[0];
       this.$http.all([this.getNewMovies(lastMonth,today),this.getPopTvShows(),this.getPopCelebs()]).then((results) => {
-        this.newMovies = results[0].data.results;
-        this.popTvShows = results[1].data.results;
-        this.popCelebs = results[2].data.results;
+        this.newMovies = results[0].data.results.slice(0,14);
+        this.popTvShows = results[1].data.results.slice(0,14);
+        this.popCelebs = results[2].data.results.slice(0,14);
       });
       this.language == 'en-US' ? this.title = ['Now Playing Movies','Popular TV Shows','Popular Celebs'] : this.title = ['最新熱門電影','熱門影集','熱門名人'];
     }
